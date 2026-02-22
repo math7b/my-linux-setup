@@ -17,15 +17,9 @@ ask() {
   done
 }
 
-echo
-echo
-
 if ask "Update the system package database?"; then
   sudo pacman -Syu --needed
 fi
-
-echo
-echo
 
 if ask "Stow some .config folders?"; then
   sudo pacman -S stow --needed
@@ -59,9 +53,6 @@ if ask "Stow some .config folders?"; then
   fi
 fi
 
-echo
-echo
-
 if ask "Install and configure Hyprland?"; then
   HYPR=(
     hyprland # 🪟 Hyprland & Wayland
@@ -87,14 +78,10 @@ if ask "Install and configure Hyprland?"; then
   done
 fi
 
-echo
-echo
-
 if ask "Install the packages?"; then
   echo "Installing packages..."
   PACKAGES=(
-     # 🛠️ Componentes Essenciais do Sistema
-    sbctl
+    sbctl # 🛠️ Componentes Essenciais do Sistema
     nvtop
     dunst
     grim
@@ -122,6 +109,8 @@ if ask "Install the packages?"; then
     docker
     docker-compose
     code
+    docker
+    docker-compose
     kitty # 💻 Ambiente de Desktop / Sistema Gráfico
     rofi
     dolphin
@@ -129,8 +118,7 @@ if ask "Install the packages?"; then
     nwg-look
     gnome-characters
     blueman
-    vivaldi # 🌐 Navegadores e Comunicação
-    discord
+    discord # 🌐 Navegadores e Comunicação
     torbrowser-launcher
     btop # ⚙️ Ferramentas do Sistema (Qualidade de vida)
     fastfetch
@@ -145,6 +133,7 @@ if ask "Install the packages?"; then
     bat # 🗂️ Gerenciadores de Arquivos
     stow
     baobab
+    7zip
     krita # 📝 Produtividade
     yt-dlp
     fuse2 # For AppImage
@@ -156,23 +145,37 @@ if ask "Install the packages?"; then
   done
 fi
 
-echo
-echo
+if ask "Configure Steam?"; then
+  echo "Go to /etc/pacman.conf and remove the # in"
+  echo "# [multilib]"
+  echo "# Include = /etc/pacman.d/mirrorlist"
+  if ! pacman -Qs steam > /dev/null; then
+    if ask "Install Steam?"; then
+      sudo pacman -Syu --needed
+      sudo pacman -S steam
+    fi
+  fi
+  if ask "Check steam for missing drivers?"; then
+    STEAM_RUNTIME_VERBOSE=1 steam
+    read -rp "Press ENTER to continue"
+  fi
+fi
 
 if ask "Install drivers?"; then
   DRIVERS=(
-    intel-media-driver
-    libva-intel-driver
-    libva-mesa-driver
-    mesa vulkan-intel
-    vulkan-nouveau
-    vulkan-radeon
-    xf86-video-amdgpu
-    xf86-video-ati
-    xf86-video-nouveau
-    xf86-video-vmware
-    xorg-server 
-    xorg-xinit
+    #intel-media-driver
+    #libva-intel-driver
+    #libva-mesa-driver
+    #mesa
+    #vulkan-intel
+    #vulkan-nouveau
+    #vulkan-radeon
+    #xf86-video-amdgpu
+    #xf86-video-ati
+    #xf86-video-nouveau
+    #xf86-video-vmware
+    #xorg-server 
+    #xorg-xinit
   )
   for pkg in "${DRIVERS[@]}"; do
     echo
@@ -180,9 +183,6 @@ if ask "Install drivers?"; then
     sudo pacman -S --needed "$pkg" || true
   done
 fi
-
-echo
-echo
 
 if ask "Check some systemctl services?"; then
   services=(
@@ -200,9 +200,6 @@ if ask "Check some systemctl services?"; then
     fi
   done
 fi
-
-echo
-echo
 
 if ask "Install flatpac stuffs?"; then
   flathub=(
@@ -232,36 +229,16 @@ if ask "Install flatpac stuffs?"; then
   fi
 fi
 
-echo
-echo
-
-start_winboat() {
-	cd ~/
-  if [ -d "$HOME/Downloads/" ]; then
-    echo "Downloads directory found."
-    cd ~/Downloads
-    # Check for WinBoat AppImage
-    if ls /WinBoat*.AppImage >/dev/null 2>&1; then
-        echo "WinBoat AppImage found."
-    	  ./WinBoat*.AppImage
-        cd ~/
-    else
-        echo "WinBoat AppImage not found in ~/Downloads"
-        echo "Place the WinBoat AppImage in the Downloads folder and try again."
-    fi
-  fi
-}
-
-if ls /WinBoat*.AppImage >/dev/null 2>&1; then
-  if ask "Start WinBoat now?"; then
-      start_winboat
-  fi
-fi
-if ask "Proceed with graphical interface setup?"; then
+filesToConfigure=(
+  ~/Downloads/zoom_x86_64.pkg.tar.xz
+  ~/Downloads/winboat-*-x86_64.AppImage
+)
+if ask "Proceed with graphical programs instalation?"; then
   if ask "Install web programs?"; then
     urls=(
         "https://zoom.us/download?os=linux"
         "https://nodejs.org/en/download"
+        "https://www.winboat.app/"
     )
     for url in "${urls[@]}"; do
         if ask "Open $url?"; then
@@ -269,32 +246,37 @@ if ask "Proceed with graphical interface setup?"; then
             read -rp "Press ENTER to continue"
         fi
     done
-    if [ -f ~/Downloads/zoom_x86_64.pkg.tar.xz ]; then
-      if ask  "Install Zoom?"; then
-          sudo pacman -U ~/Downloads/zoom_x86_64.pkg.tar.xz
-      fi
-    else
-      echo "Zoom package not found in Downloads."
-    fi
-  fi
-  if ask "Install WinBoat dependencies?"; then
-      echo "Opening WinBoat website"
-      xdg-open "https://www.winboat.app" &
-      READ
-      chmod +x ./WinBoat*.AppImage
-
-      echo "Installing dependencies"
-      sudo pacman -S --needed docker docker-compose freerdp
-
-      #echo "Configuring docker"
-      #sudo usermod -aG docker "$USER"
-      #sudo systemctl enable --now docker
-
-      #echo "Please log out and back in for Docker group changes to apply."
   fi
 fi
 
-if ls ~/Downloads/WinBoat*.AppImage &>/dev/null; then
+if ask "Configure installed programs?"; then
+  if [ -f ${filesToConfigure[0]} ]; then
+    if ask "Configure Zoom now?"; then
+      sudo pacman -U ${filesToConfigure[0]} --needed
+    fi
+  else
+    echo "Install Zoom first to configure."
+  fi
+  if [ -f ${filesToConfigure[1]} ]; then
+    if ask "Configure WinBoat now?"; then
+        chmod +x ${filesToConfigure[1]}
+        sudo pacman -S --needed freerdp
+        sudo groupadd docker
+        sudo usermod -aG docker $USER
+        sudo systemctl enable --now docker
+        #echo "Please log out and back in for Docker group changes to apply."
+    fi
+  fi
+fi
+
+start_winboat() {
+  if [ -f ${filesToConfigure[1]} ]; then
+    ${filesToConfigure[1]}
+  else
+    echo "WinBoat AppImage not found in ~/Downloads"
+  fi
+}
+if [ -f ${filesToConfigure[1]} ]; then
   if ask "Start WinBoat now?"; then
     start_winboat
   fi

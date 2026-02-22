@@ -29,3 +29,7 @@ the gnome-keyring was not working well with gh ┻━┻︵└(՞▽՞ └)
 :%s/\%u2060//g | a nvim comand to clean the emoticons <2060> stufs
 
 tar -xvf zen.linux-x86_64.tar.xz
+
+
+swapon --show | To check swap status, use:
+

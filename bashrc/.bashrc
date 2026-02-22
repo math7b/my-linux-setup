@@ -9,7 +9,7 @@ alias snvf='selected=$(fzf --style full --preview="bat {}") && [ -n "$selected" 
 
 alias lsa='ls --all'
 
-alias arise='uwsm start hyprland'
+alias arise='uwsm start hyprland.desktop'
 
 alias dfas='clear; fastfetch --kitty-icat ~/.config/fastfetch/nyarch.png'
 
@@ -17,12 +17,3 @@ alias zen='exec ./zen/zen'
 
 dfas
 
-export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
-
-
-# fnm
-FNM_PATH="/home/mathy/.local/share/fnm"
-if [ -d "$FNM_PATH" ]; then
-  export PATH="$FNM_PATH:$PATH"
-  eval "`fnm env`"
-fi
