@@ -14,11 +14,18 @@ hyprctl clients
 C-n | to open
 C-p | to open file finder
 = | to ident in visual mode
-
 a | to create a file\folder
+Shift-h | to show hiden files in tree
+
 x | to cut
 p | to past
+# -------
 
+# -------
+# tmux
+C-s | is the super key
+Super-Shift-" | create a window in the bottom
+Super-Shift-% | create a window to the right
 # -------
 
 git config --global credential.helper manager-core | 👇️
