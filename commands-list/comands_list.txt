@@ -1,16 +1,18 @@
-nix-channel --upgrade | to check if there's any update
-nixos-rebuild switch --upgrade | if there's any upgrade
-
-hostnamectl
-
-nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system
-
 chmod +x to mack a script
-
 hyprctl clients
+:%s/\%u2060//g | a nvim comand to clean the emoticons <2060> stufs
+swapon --show | To check swap status
+mv | to move a file.
 
 # -------
-# nvim
+# NIXOS
+nix-channel --upgrade | to check if there's any update
+nixos-rebuild switch --upgrade | if there's any upgrade
+hostnamectl
+nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system
+# -------
+# -------
+# NVIM
 C-n | to open
 C-p | to open file finder
 = | to ident in visual mode
@@ -20,23 +22,13 @@ Shift-h | to show hiden files in tree
 x | to cut
 p | to past
 # -------
-
 # -------
-# tmux
+# TMUX
 C-s | is the super key
 Super-Shift-" | create a window in the bottom
 Super-Shift-% | create a window to the right
 # -------
-
-git config --global credential.helper manager-core | 👇️
-A comand ussed to mack git uses it on credential manager
-I was having problems to loging my git accound because
-the gnome-keyring was not working well with gh ┻━┻︵└(՞▽՞ └)
-
-:%s/\%u2060//g | a nvim comand to clean the emoticons <2060> stufs
-
-tar -xvf zen.linux-x86_64.tar.xz
-
-
-swapon --show | To check swap status, use:
-
+# -------
+# YAZI
+. | to see hiden files/folders
+# -------

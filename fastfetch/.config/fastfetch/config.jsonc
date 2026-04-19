@@ -1,6 +1,7 @@
 {
   "logo": {
-    "width": 20,
+    "source": "~/.config/fastfetch/arch_logo.txt",
+    "width": 9,
     "padding": {
       "top": 1
     }

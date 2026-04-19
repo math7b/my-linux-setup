@@ -21,6 +21,10 @@ if ask "Update the system package database?"; then
   sudo pacman -Syu --needed
 fi
 
+if ask "Update yay database?"; then
+  sudo yay -Syu --needed
+fi
+
 if ask "Stow some .config folders?"; then
   sudo pacman -S stow --needed
   if ask "Clone the math7b's dotfile?"; then
@@ -227,6 +231,34 @@ if ask "Install flatpac stuffs?"; then
       fi
     done
   fi
+fi
+
+# Instalar e configurar yay (AUR Helper)
+if ask "Install and configure yay (AUR Helper)?"; then
+  if ! command -v yay &> /dev/null; then
+    echo "Installing dependencies for yay..."
+    sudo pacman -S --needed base-devel git
+    echo "Cloning and building yay..."
+    git clone https://aur.archlinux.org /tmp/yay
+    cd /tmp/yay
+    makepkg -si
+    cd -
+    rm -rf /tmp/yay
+  else
+    echo "yay is already installed."
+  fi
+fi
+
+# Instalação de pacotes via AUR
+if command -v yay &> /dev/null; then
+  if ask "Install AUR packages (ani-cli & antigravity)?"; then
+    echo "Installing ani-cli..."
+    yay -S --needed ani-cli
+    echo "Installing antigravity..."
+    yay -S --needed antigravity
+  fi
+else
+  echo "yay not found. Skipping AUR packages."
 fi
 
 filesToConfigure=(

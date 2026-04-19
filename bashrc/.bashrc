@@ -11,7 +11,7 @@ alias lsa='ls --all'
 
 alias arise='uwsm start hyprland.desktop'
 
-alias dfas='clear; fastfetch --kitty-icat ~/.config/fastfetch/nyarch.png'
+alias dfas='clear; fastfetch --kitty-icat ~/.config/fastfetch/nyarch.png --logo-width 24'
 
 alias zen='exec ./zen/zen'
 
